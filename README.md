@@ -45,3 +45,59 @@ VM Host (10.0.2.15)
 nftables Firewall + DNAT
       ↓
 www Container (172.16.31.50)
+```
+----
+## 📸 Preview
+
+### 🖥️ Host Network Overview
+Verified the VM hostname, interfaces, and routing information before applying firewall and forwarding rules.
+
+![Host Network Overview](screenshots/host-network-overview.png)
+
+---
+
+### 📦 LXC Container Address Verification
+Confirmed that all running LXC containers had assigned IPv4 addresses, including the `www` container at `172.16.31.50`.
+
+![LXC Container Address Verification](screenshots/lxc-container-address-verification.png)
+
+---
+
+### 🛡️ nftables Firewall Rules
+Verified that `nftables` was active and that the firewall enforced a stateful default-deny policy while allowing only ports **22**, **80**, and **443**.
+
+![nftables Firewall Rules](screenshots/nftables-firewall-rules.png)
+
+---
+
+### 🔁 Port Forwarding to the `www` Container
+Verified IPv4 forwarding and DNAT rules that route incoming traffic from the VM host to the internal `www` container.
+
+![Port Forwarding to the www Container](screenshots/port-forwarding-www-container.png)
+
+---
+
+### ✅ Container Service Verification
+Confirmed that the `www` container was listening on ports **22**, **80**, and **443**, and that the required services were running.
+
+![Container Service Verification](screenshots/container-service.png)
+
+---
+
+### 🧪 Connectivity and Access Validation
+Validated successful connectivity to approved services and confirmed that unauthorized ports remained blocked.
+
+![Connectivity and Access Validation](screenshots/connectivity-access-validation.png)
+
+---
+
+## 📄 License and Usage
+
+Copyright (c) 2026 Roshaan Ameer
+
+All rights reserved.
+
+This project is shared for **portfolio, review, and educational viewing purposes only**.  
+No permission is granted to use, copy, modify, redistribute, publish, or sell any part of this work without prior written permission from the author.
+
+See the [LICENSE](LICENSE) file for full details.
