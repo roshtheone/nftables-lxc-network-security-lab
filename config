@@ -1,1 +1,49 @@
 configs/nftables.conf
+## sudo cat /etc/nftables.conf
+#!/usr/sbin/nft -f
+
+# Reconstructed nftables configuration for the Linux Firewall and Container Security Lab.
+# This file reflects the implemented firewall and DNAT forwarding rules documented in the project report.
+
+flush ruleset
+
+table inet filter {
+    chain input {
+        type filter hook input priority 0; policy drop;
+
+        iif "lo" accept
+        ct state established,related accept
+        ct state invalid drop
+
+        tcp dport 22 accept
+        tcp dport 80 accept
+        tcp dport 443 accept
+    }
+
+    chain forward {
+        type filter hook forward priority 0; policy drop;
+
+        ct state established,related accept
+        iifname "enp0s3" ip daddr 172.16.31.50 tcp dport 22 accept
+        iifname "enp0s3" ip daddr 172.16.31.50 tcp dport 80 accept
+        iifname "enp0s3" ip daddr 172.16.31.50 tcp dport 443 accept
+    }
+
+    chain output {
+        type filter hook output priority 0; policy accept;
+    }
+}
+
+table ip nat {
+    chain prerouting {
+        type nat hook prerouting priority -100; policy accept;
+
+        iifname "enp0s3" tcp dport 2222 dnat to 172.16.31.50:22
+        iifname "enp0s3" tcp dport 80 dnat to 172.16.31.50:80
+        iifname "enp0s3" tcp dport 443 dnat to 172.16.31.50:443
+    }
+
+    chain postrouting {
+        type nat hook postrouting priority 100; policy accept;
+    }
+}
